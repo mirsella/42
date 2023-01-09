@@ -1,40 +1,28 @@
-SHARED_SRCS = $(addprefix shared_srcs/, pile.c pile_action_basic.c pile_action_rotate.c parser.c)
-SHARED_OBJS = $(SHARED_SRCS:.c=.o)
-
-SRCS = $(addprefix push_swap_srcs/, push_swap.c sort.c sort_algo.c sort_algo_advanced_patopb.c sort_algo_advanced_pbtopa.c)
+SRCS = main.c check.c key_handler.c
 OBJS = $(SRCS:.c=.o)
-
-BSRCS = $(addprefix checker_srcs/, checker.c)
-BOBJS = $(BSRCS:.c=.o)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
-BNAME = checker
-NAME = push_swap
+NAME = so_long
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS) $(SHARED_OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(SHARED_OBJS) $(LIBFT)
+$(NAME): $(LIBFT) $(OBJS)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT) -L minilibx-linux -lmlx -lXext -lX11 -lm
 
 clean:
-	make -C libft clean
-	rm -f $(OBJS) $(BOBJS) $(SHARED_OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME) $(BNAME) $(LIBFT)
+	rm -f $(NAME)
 
 re: fclean all
-
-bonus: $(LIBFT) $(BOBJS) $(SHARED_OBJS)
-	$(CC) $(CFLAGS) -o $(BNAME) $(BOBJS) $(SHARED_OBJS) $(LIBFT)
 
 $(LIBFT):
 	make -C libft
 
-dev: all
-	./$(NAME) $(ARGS)
+bonus: all
 
-.PHONY: all clean fclean re bonus dev
+.PHONY: all clean fclean re bonus
